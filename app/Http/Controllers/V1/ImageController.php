@@ -36,7 +36,9 @@ class ImageController extends Controller
             $bucket = "market4scar";
             $date = date("Ymd");
             foreach ($request->images as $key => $image) {
-                $object = $date . UuidV6::uuid6() . $image->extension();
+                $uuid = UuidV6::uuid6();
+                $ext = $image->extension();
+                $object = "{$date}\ {$uuid} \ $ext";
                 $oss->uploadFile($bucket, $object, $image->path());
             }
         }
