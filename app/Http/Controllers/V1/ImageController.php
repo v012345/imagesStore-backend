@@ -45,9 +45,19 @@ class ImageController extends Controller
                 $name = $image->getClientOriginalName();
                 $size = $image->getSize();
                 [$width, $height] = getimagesize($image->path());
-                array_push($images, ["name" => $name, "size" => $size, "type" => $ext, "width" => $width, "height" => $height, "uri" => $object, "thumbnail_uri" => $object]);
+                array_push($images, [
+                    "name" => $name,
+                    "size" => $size,
+                    "type" => $ext,
+                    "width" => $width,
+                    "height" => $height,
+                    "uri" => $object,
+                    "thumbnail_uri" => $object,
+                    "created_at" => now(),
+                    "updated_at" => now()
+                ]);
             }
-            Image::createMany($images);
+            Image::insert($images);
             return  $images;
         }
 
