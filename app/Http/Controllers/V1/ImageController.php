@@ -38,7 +38,7 @@ class ImageController extends Controller
             foreach ($request->images as $key => $image) {
                 $uuid = UuidV6::uuid6();
                 $ext = $image->extension();
-                $object = "{$date}\ {$uuid} \ $ext";
+                $object = "{$date}/{$uuid}.{$ext}";
                 $oss->uploadFile($bucket, $object, $image->path());
             }
         }
