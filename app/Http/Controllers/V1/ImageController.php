@@ -5,6 +5,9 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use OSS\OssClient;
+use Ramsey\Uuid\Nonstandard\UuidV6;
 
 class ImageController extends Controller
 {
@@ -25,11 +28,29 @@ class ImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, OssClient $oss)
+    // public function store(Request $request)
     {
-        //
-        Log::debug($request);
-        return "store";
+
+        if ($request->has("images")) {
+            $bucket = "market4scar";
+            $date = date("Ymd");
+            foreach ($request->images as $key => $image) {
+                $object = $date . UuidV6::uuid6() . $image->extension();
+                $oss->uploadFile($bucket, $object, $image->path());
+            }
+        }
+
+        // if (!$request->hasFile('file')) {
+        //     return  array("code" => 50000, "data" => 'missing poster');
+        // }
+        // $uri = Storage::url($request->file->store('public/posters'));
+        // 
+        // $object = substr($uri, 1, strlen($uri));
+
+        // ;
+        // 
+        // return array("code" => 20000, "data" => $uri);
     }
 
     /**
