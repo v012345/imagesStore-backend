@@ -20,7 +20,8 @@ class ImageController extends Controller
     public function index()
     {
         //
-        return "index";
+        return Image::paginate(5);
+        // return "index";
     }
 
     /**
