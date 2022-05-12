@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -46,6 +47,7 @@ class ImageController extends Controller
                 [$width, $height] = getimagesize($image->path());
                 array_push($images, ["name" => $name, "size" => $size, "type" => $ext, "width" => $width, "height" => $height, "uri" => $object, "thumbnail_uri" => $object]);
             }
+            Image::insert($images);
             return  $images;
         }
 
