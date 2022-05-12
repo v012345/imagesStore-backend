@@ -35,13 +35,20 @@ class ImageController extends Controller
         if ($request->has("images")) {
             $bucket = "market4scar";
             $date = date("Ymd");
+            $images = [];
             foreach ($request->images as $key => $image) {
                 $uuid = UuidV6::uuid6();
                 $ext = $image->extension();
                 $object = "{$date}/{$uuid}.{$ext}";
                 $oss->uploadFile($bucket, $object, $image->path());
+                $name = $image->getClientOriginalName();
+                $size = $image->getSize();
+                [$width, $height] = getimagesize($image->path());
+                array_push($images, ["name" => $name, "size" => $size, "type" => $ext, "width" => $width, "height" => $height, "uri" => $object, "thumbnail_uri" => $object]);
             }
+            return  $images;
         }
+
 
         // if (!$request->hasFile('file')) {
         //     return  array("code" => 50000, "data" => 'missing poster');
