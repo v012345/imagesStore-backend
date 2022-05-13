@@ -16,6 +16,7 @@ class AlbumController extends Controller
     public function index()
     {
         //
+        return Album::all();
     }
 
     /**
@@ -43,9 +44,15 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         //
+        $album = Album::find($id);
+        if ($album) {
+            return  $album->images;
+        } else {
+            return response("", 404);
+        }
     }
 
     /**
