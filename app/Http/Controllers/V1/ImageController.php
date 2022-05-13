@@ -21,7 +21,7 @@ class ImageController extends Controller
     public function index(Request $request)
     {
         //
-        return Image::paginate($request->per_page ?? 15);
+        Image::whereBelongsTo(Album::find($request->album))->paginate($request->per_page ?? 15);
         // return "index";
     }
 
