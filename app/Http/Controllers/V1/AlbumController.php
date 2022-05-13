@@ -16,7 +16,7 @@ class AlbumController extends Controller
     public function index()
     {
         //
-        return Album::withCount("images")->all();
+        return Album::withCount("images")->get();
     }
 
     /**
