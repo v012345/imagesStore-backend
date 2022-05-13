@@ -17,10 +17,10 @@ class ImageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return Image::paginate(5);
+        return Image::paginate($request->per_page ?? 15);
         // return "index";
     }
 
