@@ -49,7 +49,7 @@ class AlbumController extends Controller
         //
         $album = Album::find($id);
         if ($album) {
-            return  $album->images->paginate($request->per_page ?? 15);
+            return  $album->images()->paginate($request->per_page ?? 15);
         } else {
             return response("", 404);
         }
