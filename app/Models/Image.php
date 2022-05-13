@@ -24,6 +24,11 @@ class Image extends Model
         'thumbnail_uri',
     ];
 
+    public function albums()
+    {
+        return $this->belongsToMany(Album::class);
+    }
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

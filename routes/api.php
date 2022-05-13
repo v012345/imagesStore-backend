@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\AlbumController;
 use App\Http\Controllers\V1\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::prefix("v1")->group(function () {
     Route::apiResource('images', ImageController::class);
+    Route::apiResource('albums', AlbumController::class);
 });

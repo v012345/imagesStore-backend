@@ -61,18 +61,6 @@ class ImageController extends Controller
             Image::insert($images);
             return  $images;
         }
-
-
-        // if (!$request->hasFile('file')) {
-        //     return  array("code" => 50000, "data" => 'missing poster');
-        // }
-        // $uri = Storage::url($request->file->store('public/posters'));
-        // 
-        // $object = substr($uri, 1, strlen($uri));
-
-        // ;
-        // 
-        // return array("code" => 20000, "data" => $uri);
     }
 
     /**
