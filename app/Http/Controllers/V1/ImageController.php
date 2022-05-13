@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -46,7 +47,7 @@ class ImageController extends Controller
                 $name = $image->getClientOriginalName();
                 $size = $image->getSize();
                 [$width, $height] = getimagesize($image->path());
-                array_push($images, [
+                array_push($images, new Image([
                     "name" => $name,
                     "size" => $size,
                     "type" => $ext,
@@ -54,12 +55,14 @@ class ImageController extends Controller
                     "height" => $height,
                     "uri" => $object,
                     "thumbnail_uri" => $object,
-                    "created_at" => now(),
-                    "updated_at" => now()
-                ]);
+                ]));
             }
-            Image::insert($images);
-            return  $images;
+            $album = Album::firstOrCreate([
+                "name" => $request->album ?? "all"
+            ]);
+            $album->images()->saveMany($images);
+            // Image::insert($images);
+            return $album;
         }
     }
 
