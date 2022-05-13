@@ -62,7 +62,8 @@ class ImageController extends Controller
             ]);
             $album->images()->saveMany($images);
             // Image::insert($images);
-            return $album;
+            // return $album->images;
+            return response("created", 201);
         }
     }
 
