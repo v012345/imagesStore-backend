@@ -56,15 +56,19 @@ class ImageController extends Controller
                 $uuid = UuidV6::uuid6();
                 $canvas = ImageEditor::canvas(300, 200);
                 $thumbnail =  ImageEditor::make($image->path());
-                $thumbnail->fit(300, 200, function ($constraint) {
+
+                $thumbnail->resize(300, 200, function ($constraint) {
+                    $constraint->aspectRatio();
                     $constraint->upsize();
                 });
                 $canvas->insert($thumbnail, 'center');
                 $object_thumbnail = "{$date}/{$uuid}.{$ext}";
-                $canvas->save(storage_path("app/public/.{$uuid}.{$ext}"));
+                $temp_file = storage_path("app/public/{$uuid}.{$ext}");
+                $canvas->save($temp_file);
                 $canvas->destroy();
-                $oss->uploadFile($bucket, $object_thumbnail, storage_path("app/public/.{$uuid}.{$ext}"));
-                unlink(storage_path("app/public/.{$uuid}.{$ext}"));
+                $thumbnail->destroy();
+                $oss->uploadFile($bucket, $object_thumbnail, $temp_file);
+                // unlink($temp_file);
 
                 array_push($images, new Image([
                     "name" => $name,
