@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\Image;
+use Intervention\Image\Facades\Image as ImageEditor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -45,19 +46,31 @@ class ImageController extends Controller
             foreach ($request->images as $key => $image) {
                 $uuid = UuidV6::uuid6();
                 $ext = $image->extension();
-                $object = "{$date}/{$uuid}.{$ext}";
-                $oss->uploadFile($bucket, $object, $image->path());
+                $object_src = "{$date}/{$uuid}.{$ext}";
+                $oss->uploadFile($bucket, $object_src, $image->path());
                 $name = $image->getClientOriginalName();
                 $size = $image->getSize();
                 [$width, $height] = getimagesize($image->path());
+
+
+                $uuid = UuidV6::uuid6();
+                $thumbnail =  ImageEditor::make($image->path());
+                $thumbnail->fit(300, 200, function ($constraint) {
+                    $constraint->upsize();
+                });
+                $object_thumbnail = "{$date}/{$uuid}.{$ext}";
+                $thumbnail->save("public/{$uuid}.{$ext}");
+                $oss->uploadFile($bucket, $object_thumbnail, $thumbnail->basePath());
+                $thumbnail->destroy();
+
                 array_push($images, new Image([
                     "name" => $name,
                     "size" => $size,
                     "type" => $ext,
                     "width" => $width,
                     "height" => $height,
-                    "uri" => $object,
-                    "thumbnail_uri" => $object,
+                    "uri" => $object_src,
+                    "thumbnail_uri" => $object_thumbnail,
                 ]));
             }
             $album = Album::find($request->album);
