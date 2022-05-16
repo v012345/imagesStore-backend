@@ -60,9 +60,7 @@ class ImageController extends Controller
                     "thumbnail_uri" => $object,
                 ]));
             }
-            $album = Album::firstOrCreate([
-                "name" => $request->album ?? "all"
-            ]);
+            $album = Album::find($request->album);
             $album->images()->saveMany($images);
             // Image::insert($images);
             // return $album->images;
