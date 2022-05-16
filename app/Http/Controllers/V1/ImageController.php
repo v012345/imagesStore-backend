@@ -68,7 +68,7 @@ class ImageController extends Controller
                 $canvas->destroy();
                 $thumbnail->destroy();
                 $oss->uploadFile($bucket, $object_thumbnail, $temp_file);
-                // unlink($temp_file);
+                unlink($temp_file);
 
                 array_push($images, new Image([
                     "name" => $name,
@@ -122,6 +122,9 @@ class ImageController extends Controller
     public function destroy($id)
     {
         //
-        return "destroy";
+        $image = Image::find($id);
+        $image->albums()->detach();
+        $image->delete();
+        return response("", "204");
     }
 }
