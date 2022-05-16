@@ -59,9 +59,10 @@ class ImageController extends Controller
                     $constraint->upsize();
                 });
                 $object_thumbnail = "{$date}/{$uuid}.{$ext}";
-                $thumbnail->save("storage/app/public/{$uuid}.{$ext}");
-                $oss->uploadFile($bucket, $object_thumbnail, $thumbnail->basePath());
+                $thumbnail->save(storage_path("app/public/ .{$uuid}.{$ext}"));
                 $thumbnail->destroy();
+                $oss->uploadFile($bucket, $object_thumbnail, storage_path("app/public/ .{$uuid}.{$ext}"));
+
 
                 array_push($images, new Image([
                     "name" => $name,
