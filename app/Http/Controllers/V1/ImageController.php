@@ -22,7 +22,7 @@ class ImageController extends Controller
     {
         //
 
-        Image::whereHas("albums", function ($query) use ($request) {
+        return Image::whereHas("albums", function ($query) use ($request) {
             $query->where('albums.id', $request->album);
         })->paginate($request->per_page ?? 15);
         // return "index";
