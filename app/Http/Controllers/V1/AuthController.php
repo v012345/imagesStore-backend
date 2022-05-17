@@ -40,6 +40,7 @@ class AuthController extends Controller
         if (!Auth::attempt($attr)) {
             return response()->json('Credentials not match', 401);
         }
+        /** @var \App\Models\User $user **/
         $user = Auth::user();
         return response()->json([
             "token" => $user->createToken('API Token')->plainTextToken,
