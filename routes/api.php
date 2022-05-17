@@ -26,4 +26,10 @@ Route::prefix("v1")->group(function () {
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::apiResource('images', ImageController::class);
     Route::apiResource('albums', AlbumController::class);
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::get('/me', function (Request $request) {
+            return auth()->user();
+        });
+        // Route::post('/auth/logout', [AuthController::class, 'logout']);
+    });
 });
