@@ -22,8 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::prefix("v1")->group(function () {
 
-    Route::post("register", [AuthController::class, "signup"]);
-
+    Route::post("auth/register", [AuthController::class, "signup"]);
+    Route::post('auth/login', [AuthController::class, 'login']);
     Route::apiResource('images', ImageController::class);
     Route::apiResource('albums', AlbumController::class);
 });

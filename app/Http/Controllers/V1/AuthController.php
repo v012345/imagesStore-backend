@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -28,5 +29,20 @@ class AuthController extends Controller
         $success['name'] =  $user->name;
         $success['email'] =  $user->email;
         return response()->json($success, 201);
+    }
+    public function login(Request $request)
+    {
+        $attr = $request->validate([
+            'email' => 'required|string|email|',
+            'password' => 'required|string|min:6'
+        ]);
+
+        if (!Auth::attempt($attr)) {
+            return response()->json('Credentials not match', 401);
+        }
+        return auth();
+        // return response()->json([
+        //     'token' => auth()->user()->createToken('API Token')->plainTextToken
+        // ], 200);
     }
 }
