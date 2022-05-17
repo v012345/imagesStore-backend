@@ -40,7 +40,7 @@ class AuthController extends Controller
         if (!Auth::attempt($attr)) {
             return response()->json('Credentials not match', 401);
         }
-        return auth();
+        return Auth::user();
         // return response()->json([
         //     'token' => auth()->user()->createToken('API Token')->plainTextToken
         // ], 200);
