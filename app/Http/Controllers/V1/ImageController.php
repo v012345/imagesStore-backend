@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\CreateThumbnail;
 use App\Jobs\UploadImage;
 use App\Models\Album;
 use App\Models\Image;
@@ -55,8 +54,8 @@ class ImageController extends Controller
                 $name = $image->getClientOriginalName();
                 $size = $image->getSize();
                 [$width, $height] = getimagesize($image->path());
-                $original_image_path  =  storage_path("app/" . $image->storeAs('images', "{$uuid}.{$ext}"));
-
+                $image->storeAs('images', "{$uuid}.{$ext}");
+                $original_image_path  = $image->path();
 
 
 
@@ -70,15 +69,26 @@ class ImageController extends Controller
 
 
                 $uuid = UuidV6::uuid6();
-                $object_thumbnail = "{$date}/{$uuid}.{$ext}";
-                $original_image_path  =  storage_path("app/" . $image->storeAs('images', "{$uuid}.{$ext}"));
+                $canvas = ImageEditor::canvas(300, 200);
+                $thumbnail =  ImageEditor::make($image->path());
 
-                CreateThumbnail::dispatch([
+                $thumbnail->resize(300, 200, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                $canvas->insert($thumbnail, 'center');
+                $object_thumbnail = "{$date}/{$uuid}.{$ext}";
+                $temp_file = storage_path("app/public/{$uuid}.{$ext}");
+                $canvas->save($temp_file);
+                $canvas->destroy();
+                $thumbnail->destroy();
+                // $oss->uploadFile($bucket, $object_thumbnail, $temp_file);
+                UploadImage::dispatch([
                     "object" => $object_thumbnail,
-                    "path" => $original_image_path
+                    "path" => $temp_file
                 ]);
 
-
+                // unlink($temp_file);
 
                 array_push($images, new Image([
                     "name" => $name,
