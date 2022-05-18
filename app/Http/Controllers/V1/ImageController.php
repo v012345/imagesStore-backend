@@ -43,7 +43,7 @@ class ImageController extends Controller
             $bucket = "market4scar";
             $date = date("Ymd");
             $images = [];
-            dd($request->images);
+
             foreach ($request->images as $key => $image) {
                 $uuid = UuidV6::uuid6();
                 $ext = $image->extension();
