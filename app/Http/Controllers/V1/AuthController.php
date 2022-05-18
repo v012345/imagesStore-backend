@@ -51,4 +51,8 @@ class AuthController extends Controller
         //     'token' => auth()->user()->createToken('API Token')->plainTextToken
         // ], 200);
     }
+    public function check()
+    {
+        return auth()->check();
+    }
 }
