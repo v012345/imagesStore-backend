@@ -53,6 +53,6 @@ class AuthController extends Controller
     }
     public function check()
     {
-        return auth()->check();
+        return auth("sanctum")->check();
     }
 }
