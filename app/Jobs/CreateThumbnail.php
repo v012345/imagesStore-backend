@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Intervention\Image\Facades\Image;
+use Ramsey\Uuid\Nonstandard\UuidV6;
 use App\Jobs\UploadImage;
 
 class CreateThumbnail implements ShouldQueue
@@ -44,7 +45,7 @@ class CreateThumbnail implements ShouldQueue
             $constraint->upsize();
         });
         $canvas->insert($thumbnail, 'center');
-        $temp_file = storage_path("app/public/temp/" . $this->image["object"]);
+        $temp_file = storage_path("app/" . UuidV6::uuid6());
         $canvas->save($temp_file);
         $canvas->destroy();
         $thumbnail->destroy();
@@ -52,7 +53,6 @@ class CreateThumbnail implements ShouldQueue
             "object" => $this->image["object"],
             "path" => $temp_file
         ]);
-        unlink($temp_file);
         unlink($this->image["path"]);
     }
 }
