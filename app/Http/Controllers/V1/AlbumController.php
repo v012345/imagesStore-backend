@@ -32,6 +32,7 @@ class AlbumController extends Controller
             $album = Album::firstOrCreate([
                 'name' => $request->name
             ]);
+            $album->roles()->attach(auth()->user());
             return $album;
         } else {
             return response("miss name", 400);
