@@ -38,7 +38,7 @@ class ImageController extends Controller
     public function store(Request $request, OssClient $oss)
     // public function store(Request $request)
     {
-
+        return ($request->has("images"));
         if ($request->has("images")) {
             $bucket = "market4scar";
             $date = date("Ymd");
