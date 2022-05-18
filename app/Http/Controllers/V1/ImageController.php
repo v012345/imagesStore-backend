@@ -36,7 +36,7 @@ class ImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, OssClient $oss)
     // public function store(Request $request)
     {
 
@@ -54,7 +54,7 @@ class ImageController extends Controller
                 $name = $image->getClientOriginalName();
                 $size = $image->getSize();
                 [$width, $height] = getimagesize($image->path());
-                $original_image_path  =  storage_path("app/".$image->storeAs('images', "{$uuid}.{$ext}"));
+                $original_image_path  =  storage_path("app/" . $image->storeAs('images', "{$uuid}.{$ext}"));
 
 
 
@@ -82,13 +82,13 @@ class ImageController extends Controller
                 $canvas->save($temp_file);
                 $canvas->destroy();
                 $thumbnail->destroy();
-                // $oss->uploadFile($bucket, $object_thumbnail, $temp_file);
-                UploadImage::dispatch([
-                    "object" => $object_thumbnail,
-                    "path" => $temp_file
-                ]);
+                $oss->uploadFile($bucket, $object_thumbnail, $temp_file);
+                // UploadImage::dispatch([
+                //     "object" => $object_thumbnail,
+                //     "path" => $temp_file
+                // ]);
 
-                // unlink($temp_file);
+                unlink($temp_file);
 
                 array_push($images, new Image([
                     "name" => $name,
