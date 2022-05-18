@@ -54,8 +54,8 @@ class ImageController extends Controller
                 $name = $image->getClientOriginalName();
                 $size = $image->getSize();
                 [$width, $height] = getimagesize($image->path());
-                $original_image_path = $image->storeAs('images', "{$uuid}.{$ext}");
-
+                $image->storeAs('images', "{$uuid}.{$ext}");
+                $original_image_path  = $image->path();
 
 
 
