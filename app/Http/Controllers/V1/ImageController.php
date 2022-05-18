@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\UploadImage;
 use App\Models\Album;
 use App\Models\Image;
 use Intervention\Image\Facades\Image as ImageEditor;
@@ -35,23 +36,36 @@ class ImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, OssClient $oss)
+    public function store(Request $request)
     // public function store(Request $request)
     {
 
         if ($request->has("images")) {
-            $bucket = "market4scar";
+            // $bucket = "market4scar";
             $date = date("Ymd");
             $images = [];
 
             foreach ($request->images as $key => $image) {
+
+                // 原图
                 $uuid = UuidV6::uuid6();
                 $ext = $image->extension();
                 $object_src = "{$date}/{$uuid}.{$ext}";
-                $oss->uploadFile($bucket, $object_src, $image->path());
                 $name = $image->getClientOriginalName();
                 $size = $image->getSize();
                 [$width, $height] = getimagesize($image->path());
+                $original_image_path = $image->storeAs('images', "{$$uuid}.{$ext}");
+
+
+
+
+
+                // $oss->uploadFile($bucket, $object_src, $image->path());
+
+                UploadImage::dispatch([
+                    "object" => $object_src,
+                    "path" => $original_image_path
+                ]);
 
 
                 $uuid = UuidV6::uuid6();
@@ -68,8 +82,13 @@ class ImageController extends Controller
                 $canvas->save($temp_file);
                 $canvas->destroy();
                 $thumbnail->destroy();
-                $oss->uploadFile($bucket, $object_thumbnail, $temp_file);
-                unlink($temp_file);
+                // $oss->uploadFile($bucket, $object_thumbnail, $temp_file);
+                UploadImage::dispatch([
+                    "object" => $object_thumbnail,
+                    "path" => $temp_file
+                ]);
+
+                // unlink($temp_file);
 
                 array_push($images, new Image([
                     "name" => $name,
