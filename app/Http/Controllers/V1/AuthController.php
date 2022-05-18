@@ -52,4 +52,10 @@ class AuthController extends Controller
         // ], 200);
     }
 
+    public function logout()
+    {
+        /** @var \App\Models\User $user */
+        $user =  auth()->user();
+        $user->tokens()->delete();
+    }
 }

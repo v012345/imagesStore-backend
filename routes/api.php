@@ -31,6 +31,6 @@ Route::prefix("v1")->group(function () {
         });
         Route::apiResource('images', ImageController::class);
         Route::apiResource('albums', AlbumController::class);
-        // Route::post('/auth/logout', [AuthController::class, 'logout']);
+        Route::post('/auth/logout', [AuthController::class, 'logout']);
     });
 });
