@@ -16,7 +16,9 @@ class AlbumController extends Controller
     public function index()
     {
         //
-        return Album::withCount("images")->get();
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        return $user->albums()->withCount("images")->get();
     }
 
     /**
