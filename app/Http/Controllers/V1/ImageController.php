@@ -82,6 +82,7 @@ class ImageController extends Controller
                 $canvas->save($temp_file);
                 $canvas->destroy();
                 $thumbnail->destroy();
+                $bucket = "market4scar";
                 $oss->uploadFile($bucket, $object_thumbnail, $temp_file);
                 // UploadImage::dispatch([
                 //     "object" => $object_thumbnail,
