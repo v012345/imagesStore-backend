@@ -16,4 +16,9 @@ class Album extends Model
     {
         return $this->belongsToMany(Image::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
