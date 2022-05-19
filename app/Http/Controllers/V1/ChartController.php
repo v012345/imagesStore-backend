@@ -12,8 +12,8 @@ class ChartController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = auth()->user();
-        $albums = $user->albums()->withCount("images")->orderByDesc("id")->limit(4)->get();
-
-        return ["albums" => $albums];
+        $albums = $user->albums()->withCount("images")->orderByDesc("id")->limit(3)->get();
+        $images = $user->albums()->images;
+        return ["albums" => $albums, "images" => $images];
     }
 }
