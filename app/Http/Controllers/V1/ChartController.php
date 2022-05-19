@@ -13,7 +13,7 @@ class ChartController extends Controller
         /** @var \App\Models\User $user */
         $user = auth()->user();
         $albums = $user->albums()->withCount("images")->orderByDesc("id")->limit(3)->get();
-        $images = $user->albums()->images;
+        $images = $user->albums()->images()->get();
         return ["albums" => $albums, "images" => $images];
     }
 }
