@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\V1\AlbumController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\ImageController;
