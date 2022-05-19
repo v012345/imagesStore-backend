@@ -15,7 +15,7 @@ class ChartController extends Controller
         $user = auth()->user();
         $albums = $user->albums()->withCount("images")->orderByDesc("id")->limit(3)->get();
         $cdn = Image::where("has_uploaded_to_cdn", true)->sum("size");
-        $local = Image::where("has_uploaded_to_cdn", false)->sum("size");
+        $local = intval(Image::where("has_uploaded_to_cdn", false)->sum("size"));
         return ["albums" => $albums, "images" => [
             "cdn" => $cdn,
             "local" => $local,
