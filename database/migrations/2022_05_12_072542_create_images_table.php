@@ -21,6 +21,9 @@ return new class extends Migration
             $table->integer("width");
             $table->integer("height");
             $table->string('uri');
+            $table->boolean("has_uploaded_to_cdn")->default(false);
+            $table->boolean("has_thumbnail")->default(false);
+            $table->boolean("thumbnail_has_uploaded_to_cdn")->default(false);
             $table->string('thumbnail_uri');
             $table->timestamps();
         });
