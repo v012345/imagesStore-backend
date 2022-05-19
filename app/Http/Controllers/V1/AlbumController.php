@@ -19,8 +19,8 @@ class AlbumController extends Controller
         /** @var \App\Models\User $user */
         $user = auth()->user();
         return $user->albums()->with(["images" => function ($query) {
-            $query->where(1)->limit(1);
-        }])->withCount("images")->orderByDesc("id")->get();
+            $query->limit(1);
+        }])->withCount("images")->orderByDesc("id")->toSql();
     }
 
     /**
