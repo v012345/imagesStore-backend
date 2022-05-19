@@ -25,7 +25,10 @@ class ImageController extends Controller
         //
 
         return Image::with("albums")->whereHas("albums", function ($query) use ($request) {
+
             $query->where('albums.id', $request->album);
+            if ($request->order_by == "-id")
+                $query->orderByDesc("id");
         })->paginate($request->per_page ?? 15);
         // return "index";
     }
@@ -149,10 +152,10 @@ class ImageController extends Controller
         $image = Image::find($request->id);
         if ($image) {
             return Storage::download($image->uri, "image", ['Content-Type' => "blob"]);
-            $path = Storage::path($image->uri);
-            $content = Storage::get($image->uri);
-            return [$image->uri, $path];
-            return response($content)->header('Content-Type', "blob");
+            // $path = Storage::path($image->uri);
+            // $content = Storage::get($image->uri);
+            // return [$image->uri, $path];
+            // return response($content)->header('Content-Type', "blob");
         }
     }
 }
