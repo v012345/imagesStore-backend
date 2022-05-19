@@ -43,3 +43,5 @@ Route::any("test", function (Request $request) {
     return $path;
     return;
 });
+
+Route::get('/download/image', [ImageController::class, 'download']);
