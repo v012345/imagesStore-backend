@@ -150,7 +150,7 @@ class ImageController extends Controller
         if ($image) {
             $path = Storage::path($image->uri);
             $content = Storage::get($image->uri);
-            return [$image->uri, $path, $content];
+            return [$image->uri, $path];
             return response($content)->header('Content-Type', "blob");
         }
     }
