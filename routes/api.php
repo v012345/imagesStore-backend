@@ -3,6 +3,7 @@
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\V1\AlbumController;
 use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\V1\ChartController;
 use App\Http\Controllers\V1\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,7 @@ Route::prefix("v1")->group(function () {
         Route::apiResource('albums', AlbumController::class);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
         Route::get('/download/image', [ImageController::class, 'download']);
+        Route::get('/statistics/data', [ChartController::class, 'data']);
     });
 });
 
