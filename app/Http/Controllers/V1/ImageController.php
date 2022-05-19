@@ -148,6 +148,7 @@ class ImageController extends Controller
     {
         $image = Image::find($request->id);
         if ($image) {
+            return Storage::download($image->uri);
             $path = Storage::path($image->uri);
             $content = Storage::get($image->uri);
             return [$image->uri, $path];
