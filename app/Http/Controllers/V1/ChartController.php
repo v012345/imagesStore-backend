@@ -10,6 +10,10 @@ class ChartController extends Controller
     //
     public function data()
     {
-        return auth()->user();
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $albums = $user->albums()->withCount("images")->orderByDesc("id")->limit(4)->get();
+
+        return ["albums" => $albums];
     }
 }
