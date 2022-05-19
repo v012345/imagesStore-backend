@@ -6,6 +6,7 @@ use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,10 @@ Route::prefix("v1")->group(function () {
         Route::apiResource('albums', AlbumController::class);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
     });
+});
+
+Route::any("test", function (Request $request) {
+    $path = $request->file('avatar')->store('images');
+    return $path;
+    return;
 });
