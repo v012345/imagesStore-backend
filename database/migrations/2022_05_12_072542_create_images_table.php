@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('introduction')->default("please input introduction");
             $table->integer('size');
             $table->string("type");
             $table->integer("width");

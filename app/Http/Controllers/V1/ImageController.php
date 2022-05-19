@@ -56,10 +56,6 @@ class ImageController extends Controller
                 [$width, $height] = getimagesize($image->path());
                 $path = $image->store("images");
 
-
-
-
-
                 // $oss->uploadFile($bucket, $object_src, $image->path());
 
                 // UploadImage::dispatch([
@@ -146,5 +142,14 @@ class ImageController extends Controller
         $image->albums()->detach();
         $image->delete();
         return response("", "204");
+    }
+
+    public function download(Request $request)
+    {
+        $image = Image::find($request->id);
+        if ($image) {
+            $content = Storage::get($image->uri);
+            return response($content)->header('Content-Type', "blob");
+        }
     }
 }
