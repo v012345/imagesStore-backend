@@ -23,13 +23,15 @@ class ImageController extends Controller
     public function index(Request $request)
     {
         //
-
-        return Image::with("albums")->whereHas("albums", function ($query) use ($request) {
+        $sql =  Image::with("albums")->whereHas("albums", function ($query) use ($request) {
 
             $query->where('albums.id', $request->album);
-            if ($request->order_by == "-id")
-                $query->orderByDesc("id");
-        })->paginate($request->per_page ?? 15);
+        });
+
+        if ($request->order_by == "-id")
+            $sql =  $sql->orderByDesc("id");
+
+        return $sql->paginate($request->per_page ?? 15);
         // return "index";
     }
 
