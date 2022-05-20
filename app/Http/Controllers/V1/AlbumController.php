@@ -19,10 +19,10 @@ class AlbumController extends Controller
         /** @var \App\Models\User $user */
         $user = auth()->user();
         return $user->albums()->with(["images" => function ($query) {
-            // $query->limit(1);
+            $query->take(1);
         }])->withCount("images")->orderByDesc("id")->toSql();
     }
-// select `albums`.*, (select count(*) from `images` inner join `album_image` on `images`.`id` = `album_image`.`image_id` where `albums`.`id` = `album_image`.`album_id`) as `images_count` from `albums` inner join `album_user` on `albums`.`id` = `album_user`.`album_id` where `album_user`.`user_id` = ? order by `id` desc
+    // select `albums`.*, (select count(*) from `images` inner join `album_image` on `images`.`id` = `album_image`.`image_id` where `albums`.`id` = `album_image`.`album_id`) as `images_count` from `albums` inner join `album_user` on `albums`.`id` = `album_user`.`album_id` where `album_user`.`user_id` = ? order by `id` desc
     /**
      * Store a newly created resource in storage.
      *

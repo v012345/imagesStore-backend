@@ -5,6 +5,7 @@ use App\Http\Controllers\V1\AlbumController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\ChartController;
 use App\Http\Controllers\V1\ImageController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -41,9 +42,9 @@ Route::prefix("v1")->group(function () {
 });
 
 Route::any("test", function (Request $request) {
-    $path = $request->file('avatar')->store('images');
-    return $path;
-    return;
+    return User::find(1)->albums()->with(["images" => function ($query) {
+        $query->take(1);
+    }])->withCount("images")->orderByDesc("id")->toSql();
 });
 
 Route::get('/download/image', [ImageController::class, 'download']);
