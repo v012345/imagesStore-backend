@@ -37,14 +37,19 @@ Route::prefix("v1")->group(function () {
         Route::apiResource('albums', AlbumController::class);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
         Route::get('/download/image', [ImageController::class, 'download']);
+        Route::get('/download/album', [AlbumController::class, 'download']);
         Route::get('/statistics/data', [ChartController::class, 'data']);
     });
 });
 
 Route::any("test", function (Request $request) {
-    return User::find(1)->albums()->with(["images" => function ($query) {
-        $query->take(1);
-    }])->withCount("images")->orderByDesc("id")->toSql();
-});
+    // return 123;
+    $myfile = fopen(storage_path("images" . DIRECTORY_SEPARATOR . "images.zip"), "w");
+    fclose($myfile);
+    return file_exists(storage_path("images" . DIRECTORY_SEPARATOR . "images.zip"));
+    $zip = new ZipArchive();
 
-Route::get('/download/image', [ImageController::class, 'download']);
+    return file_exists(storage_path("images/images.zip"));
+    dd(Storage::get("images/images.zip"));
+    return Storage::download("images/images.zip", null, ['Content-Type' => "blob"]);
+});

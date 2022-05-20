@@ -47,7 +47,6 @@ class ImageController extends Controller
 
         if ($request->has("images")) {
             // $bucket = "market4scar";
-            $date = date("Ymd");
             $images = [];
 
             foreach ($request->images as $key => $image) {
@@ -131,7 +130,18 @@ class ImageController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return "update";
+
+        $image = Image::find($id);
+        if ($image) {
+            if ($request->introduction && strlen($request->introduction) > 0) {
+                $image->introduction = $request->introduction;
+                $image->save();
+            }
+
+            //     return  $album->images()->paginate($request->per_page ?? 15);
+            // } else {
+            //     return response("", 404);
+        }
     }
 
     /**
