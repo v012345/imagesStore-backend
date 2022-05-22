@@ -49,7 +49,20 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return auth()->user();
+
+        $attr = $request->validate([
+            'name' => 'required|string|min:6',
+            'id' => 'required',
+            'avatar' => "required|string"
+        ]);
+        /** @var \App\Models\User $user **/
+        $user = auth()->user();
+        $user->name = $attr['name'];
+        $user->avatar = $attr['avatar'];
+        $user->save();
+
+
+        return $user;
     }
 
     /**
