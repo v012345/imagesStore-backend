@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -25,8 +26,10 @@ class AuthController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+        Log::debug($user);
         $success['token'] =  $user->createToken('MyAuthApp')->plainTextToken;
         $success['name'] =  $user->name;
+        $success['avatar'] =  $user->avatar;
         $success['email'] =  $user->email;
         return response()->json($success, 201);
     }
@@ -46,6 +49,7 @@ class AuthController extends Controller
             "token" => $user->createToken('API Token')->plainTextToken,
             "name" => $user->name,
             "email" => $user->email,
+            "avatar" => $user->avatar,
         ], 200);
         // return response()->json([
         //     'token' => auth()->user()->createToken('API Token')->plainTextToken

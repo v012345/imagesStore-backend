@@ -34,7 +34,8 @@ Route::prefix("v1")->group(function () {
         Route::get('/me', function (Request $request) {
             return auth()->user();
         });
-        Route::put("/users/{user}",[UserController::class, "update"]);
+        Route::post("/user/avatar", [UserController::class, "upload"]);
+        Route::put("/users/{user}", [UserController::class, "update"]);
         Route::apiResource('images', ImageController::class);
         Route::apiResource('albums', AlbumController::class);
         Route::post('/auth/logout', [AuthController::class, 'logout']);

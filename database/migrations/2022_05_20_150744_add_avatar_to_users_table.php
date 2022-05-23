@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->string("avatar")->default("avatar/default.png");
+            $table->string("avatar")->default("images/default.png");
         });
     }
 

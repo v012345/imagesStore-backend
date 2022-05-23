@@ -46,4 +46,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Album::class);
     }
+    protected $attributes = [
+        'avatar' => "images/default.png",
+    ];
 }

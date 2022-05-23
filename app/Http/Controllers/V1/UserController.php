@@ -39,6 +39,15 @@ class UserController extends Controller
         //
     }
 
+    public function upload(Request $request)
+    {
+        // return $request->all();
+        if ($request->has("avatar")) {
+            $path = $request->avatar->store("images");
+            return  $path;
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *
