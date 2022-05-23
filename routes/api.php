@@ -47,9 +47,44 @@ Route::prefix("v1")->group(function () {
 
 Route::any("test", function (Request $request) {
     // return 123;
-    $myfile = fopen(storage_path("images" . DIRECTORY_SEPARATOR . "images.zip"), "w");
+    $zipFile = storage_path("app" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "temp.zip");
+    // $zip = new ZipArchive();
+
+
+    if (!file_exists($zipFile)) {
+        touch($zipFile);
+    }
+    // return file_exists($zipFile);
+    $zip = new ZipArchive();
+
+    $zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+
+    $file =  storage_path("app" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "1g5XHSMwUyXba6oPqsUAUfuKXAVZs5cQzDN4U4dI.png");
+    $zip->addFile($file, "213.png");
+    $zip->close();
+    // return file_exists($zipFile);
+    // fopen($zipFile, 'r');
+    return Storage::download("images/temp.zip", null, ['Content-Type' => "blob"]);
+
+    // return Storage::download("images/images.zip", null, ['Content-Type' => "blob"]);
+    // if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+    //     // $files = File::files(public_path('myFiles'));
+    //     // File
+    //     // foreach ($files as $key => $value) {
+    //     //     $relativeNameInZipFile = basename($value);
+    // $zip->addFile($value, $relativeNameInZipFile)
+    //     //     ;
+    //     // }
+
+    //     $zip->close();
+    //     return response()->download($zipFile);
+    // }
+
+    return response()->download($zipFile);
+    $myfile = fopen(storage_path("app/images" . DIRECTORY_SEPARATOR . "images.zip"), "w");
     fclose($myfile);
-    return file_exists(storage_path("images" . DIRECTORY_SEPARATOR . "images.zip"));
+    return file_exists(storage_path("app/images" . DIRECTORY_SEPARATOR . "images.zip"));
     $zip = new ZipArchive();
 
     return file_exists(storage_path("images/images.zip"));

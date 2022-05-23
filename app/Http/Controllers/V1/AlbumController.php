@@ -103,32 +103,20 @@ class AlbumController extends Controller
 
         $album = Album::find($request->id);
         if ($album) {
-           
-          
-// $zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE)
-            // touch($zipFile);
-            // if (!file_exists($zipFile)) {
-
-            // }
-            return Storage::download("images/images.zip", null, ['Content-Type' => "blob"]);
-            // if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-            //     // $files = File::files(public_path('myFiles'));
-            //     // File
-            //     // foreach ($files as $key => $value) {
-            //     //     $relativeNameInZipFile = basename($value);
-            //     //     $zip->addFile($value, $relativeNameInZipFile);
-            //     // }
-
-            //     $zip->close();
-            // return response()->download($zipFile);
-            // }
-
-
-            // return Storage::download($image->uri, "image", ['Content-Type' => "blob"]);
-            // $path = Storage::path($image->uri);
-            // $content = Storage::get($image->uri);
-            // return [$image->uri, $path];
-            // return response($content)->header('Content-Type', "blob");
+            $zipFile = storage_path("app/images/temp.zip");
+            $zip = new ZipArchive();
+            $images = $album->images;
+            if ($images->isNotEmpty()) {
+                if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+                    $images->each(function ($item, $key) use (&$zip) {
+                        $image = storage_path("app/" . $item["uri"]);
+                        $zip->addFile($image, $item["name"]);
+                    });
+                    $zip->close();
+                    return Storage::download("images/temp.zip", null, ['Content-Type' => "blob"]);
+                }
+            }
+            return response()->json("the album doesn't contain any image", 404);
         }
     }
 }
