@@ -111,12 +111,10 @@ Route::any('{any}', function (Request $request) {
             $response = Http::post($api, $request->all());
         }
 
-
-
         $header = $response->headers();
         if (key_exists("Authorization", $header)) {
             // return $header["Authorization"];
-            return response()->json(json_decode($response->body()), 200, ["Authorization" => $header["Authorization"][0]]);
+            return response()->json($response->body(), 200, ["Authorization" => $header["Authorization"][0]]);
         }
         return json_decode($response->body());
         // return response()->json($response->body());
