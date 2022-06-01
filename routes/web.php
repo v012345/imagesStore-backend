@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::fallback(function (Request $request) {
-    //
-    return ["data" => $request->all(), "api" => $request->path(), "url" => $request->url(), "fullUrl" => $request->fullUrl(), "method " => $request->method()];
-});
+// Route::fallback(function (Request $request) {
+//     //
+//     return ["data" => $request->all(), "api" => $request->path(), "url" => $request->url(), "fullUrl" => $request->fullUrl(), "method " => $request->method()];
+// });
