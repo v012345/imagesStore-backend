@@ -110,7 +110,7 @@ Route::any('{any}', function (Request $request) {
             return [123, $response];
         } else {
             $response = Http::post($api, $request->all());
-            return [456, $response];
+            return [456, $response->body(), $response->headers()];
         }
         // return [123, $response];
 
