@@ -115,7 +115,7 @@ Route::any('{any}', function (Request $request) {
         // return [123, $response];
 
         $header = $response->headers();
-        return $header;
+        return key_exists("Authorization", $header);
         // if (key_exists("Authorization", $header)) {
         //     // return $header["Authorization"];
         //     return response()->json($response->body(), 200, ["Authorization" => $header["Authorization"][0]]);
