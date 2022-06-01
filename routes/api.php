@@ -114,15 +114,17 @@ Route::any('{any}', function (Request $request) {
         }
         // return [123, $response];
 
-        $header = $response->headers();
-        dd($response->header("Authorization"));
-
+        // $header = $response->headers();
+        // dd();
+        if ($response->header("Authorization")) {
+            return response($response->body(), 200, ["Authorization" => $response->header("Authorization")]);
+        }
         // return key_exists("Authorization", $header);
         // if (key_exists("Authorization", $header)) {
         //     // return $header["Authorization"];
-        //     return response()->json($response->body(), 200, ["Authorization" => $header["Authorization"][0]]);
+        //     
         // }
-        // return json_decode($response->body());
+        return json_decode($response->body());
         // return response()->json($response->body());
     }
     if ($request->isMethod('get')) {
