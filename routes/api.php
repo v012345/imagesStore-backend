@@ -110,6 +110,7 @@ Route::any('{any}', function (Request $request) {
         } else {
             $response = Http::post($api, $request->all());
         }
+        return [123, $response];
 
         $header = $response->headers();
         if (key_exists("Authorization", $header)) {
