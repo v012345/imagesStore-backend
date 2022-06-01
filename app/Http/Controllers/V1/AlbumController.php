@@ -7,6 +7,7 @@ use App\Models\Album;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
 use ZipArchive;
 
 
@@ -102,8 +103,9 @@ class AlbumController extends Controller
     {
 
         $album = Album::find($request->id);
+        $fileName = Uuid::uuid6();
         if ($album) {
-            $zipFile = storage_path("app/images/temp.zip");
+            $zipFile = storage_path("app/images/{$fileName}.zip");
             $zip = new ZipArchive();
             $images = $album->images;
             if ($images->isNotEmpty()) {
@@ -113,7 +115,7 @@ class AlbumController extends Controller
                         $zip->addFile($image, $item["name"]);
                     });
                     $zip->close();
-                    return Storage::download("images/temp.zip", null, ['Content-Type' => "blob"]);
+                    return Storage::download("images/{$fileName}.zip", null, ['Content-Type' => "blob"]);
                 }
             }
             return response()->json("the album doesn't contain any image", 404);

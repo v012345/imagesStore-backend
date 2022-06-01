@@ -91,3 +91,8 @@ Route::any("test", function (Request $request) {
     dd(Storage::get("images/images.zip"));
     return Storage::download("images/images.zip", null, ['Content-Type' => "blob"]);
 });
+
+Route::fallback(function (Request $request) {
+    //
+    return ["data" => $request->all(), "api" => $request->path(), "url" => $request->url(), "fullUrl" => $request->fullUrl(), "method " => $request->method()];
+});
