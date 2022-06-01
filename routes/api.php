@@ -105,7 +105,7 @@ Route::any('{any}', function (Request $request) {
 
         if ($request->header("authorization")) {
             $response = Http::withHeaders([
-                "authorization" => ($request->header())["authorization"][0]
+                "authorization" => ($request->header())["authorization"][0],
             ])->post($api, $request->all());
             // return [123, $response];
         } else {
@@ -120,7 +120,7 @@ Route::any('{any}', function (Request $request) {
         // $header = $response->headers();
         // dd();
         if ($response->header("Authorization")) {
-            return response($response->body(), 200, ["Authorization" => $response->header("Authorization")]);
+            return response($response->body(), 200, ["Authorization" => $response->header("Authorization"), "access-control-expose-headers" => "*"]);
         }
         // return key_exists("Authorization", $header);
         // if (key_exists("Authorization", $header)) {
