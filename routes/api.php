@@ -115,7 +115,8 @@ Route::any('{any}', function (Request $request) {
         // return [123, $response];
 
         $header = $response->headers();
-        dd($header);
+        dd($response->header("Authorization"));
+
         // return key_exists("Authorization", $header);
         // if (key_exists("Authorization", $header)) {
         //     // return $header["Authorization"];
