@@ -101,7 +101,7 @@ Route::any('{any}', function (Request $request) {
 
         // return  $request->all();
 
-        dd($request->header("authorization"));
+        // dd($request->header("authorization"));
 
         if ($request->header("authorization")) {
             $response = Http::withHeaders([
