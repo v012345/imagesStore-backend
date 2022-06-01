@@ -8,6 +8,7 @@ use App\Http\Controllers\V1\ImageController;
 use App\Http\Controllers\V1\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -93,5 +94,37 @@ Route::any("test", function (Request $request) {
 });
 
 Route::any('{any}', function (Request $request) {
-    return ["data" => $request->all(), "api" => $request->path(), "url" => $request->url(), "fullUrl" => $request->fullUrl(), "method " => $request->method()];
+    $target_server = "http://wy.wan3guo.cn:7778/";
+    $api = $target_server . $request->path();
+    if ($request->isMethod('post')) {
+        //
+
+        // return  $request->all();
+
+        // dd($request->header("authorization"));
+
+        if ($request->header("authorization")) {
+            $response = Http::withHeaders([
+                "authorization" => ($request->header())["authorization"][0]
+            ])->post($api, $request->all());
+        } else {
+            $response = Http::post($api, $request->all());
+        }
+
+
+
+        $header = $response->headers();
+        if (key_exists("Authorization", $header)) {
+            // return $header["Authorization"];
+            return response()->json(json_decode($response->body()), 200, ["Authorization" => $header["Authorization"][0]]);
+        }
+        return json_decode($response->body());
+        // return response()->json($response->body());
+    }
+    if ($request->isMethod('get')) {
+        //
+        $response = Http::post($api, $request->all());
+        return $response;
+    }
+    // return ["data" => $request->all(), "api" => $request->path(), "url" => $request->url(), "fullUrl" => $request->fullUrl(), "method " => $request->method()];
 })->where('any', '.*');
