@@ -132,7 +132,15 @@ Route::any('{any}', function (Request $request) {
     }
     if ($request->isMethod('get')) {
         //
-        $response = Http::post($api, $request->all());
+
+        if ($request->header("authorization")) {
+            $response = Http::withHeaders([
+                "authorization" => ($request->header())["authorization"][0],
+            ])->get($api, $request->all());
+        } else {
+            $response = Http::get($api, $request->all());
+            // $response = Http::post($api, $request->all());
+        }
         return $response;
     }
     // return ["data" => $request->all(), "api" => $request->path(), "url" => $request->url(), "fullUrl" => $request->fullUrl(), "method " => $request->method()];
