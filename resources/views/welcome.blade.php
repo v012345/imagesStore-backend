@@ -409,11 +409,15 @@
         body div {
             font-size: 5rem;
         }
+
+        body div span {
+            color: #eb3434;
+        }
     </style>
 </head>
 
 <body>
-    <div>你好 , <span>{{ $name }}</span></div>
+    <div>你好 , <span>{{ $name }}.</span></div>
 </body>
 
 </html>
